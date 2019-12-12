@@ -9,59 +9,17 @@ import "google/protobuf/any.proto";
 enum TaskType {
     PING = 0; // for simple request-response task
     SLEEP = 1; // for simple request-response task with some wait on receiver side
-    COMPUTE1 = 2; // for first type of computation on receiver side
-    COMPUTE2 = 3; // for second type of computation on receiver side
-    COMPUTE3 = 4; // for third type of computation on receiver side
-    CHAIN1 = 5; // for first type of chained computation on receiver side
-    CHAIN2 = 6; // for second type of chained computation on receiver side
-    CHAIN3 = 7; // for third type of chained computation on receiver side
+    COMPUTE = 2; // for computation on receiver side
 }
 
-message TaskDefinition {
-    TaskType taskType = 1;
-    repeated google.protobuf.Any details = 2;
-}
-
-message TaskSolution {
-    TaskType taskType = 1;
-    repeated google.protobuf.Any details = 2;
-}
-
-// for https://godoc.org/github.com/c9s/goprocinfo/linux#CPUStat
-message CPUStat {
-    string id = 1;
-    uint64 user = 2;
-    uint64 nice = 3;
-    uint64 system = 4;
-    uint64 idle = 5;
-    uint64 IOWait = 6;
-    uint64 IRQ = 7;
-    uint64 softIRQ = 8;
-    uint64 steal = 9;
-    uint64 guest = 10;
-    uint64 guestNice = 11;
-}
-
-// for https://godoc.org/github.com/c9s/goprocinfo/linux#Stat
-message Stat {
-    CPUStat CPUStatAll = 1;
-    repeated CPUStat CPUStats = 2;
-    uint64 interrupts = 3;
-    uint64 contextSwitches = 4;
-    google.protobuf.Timestamp bootTime = 5;
-    uint64 processes = 6;
-    uint64 procsRunning = 7;
-    uint64 procsBlocked = 8;
-}
-
-message WrappedTaskDefinition {
+message TaskRequest {
     int64 senderCounter = 1;
     string senderName = 2;
     google.protobuf.Timestamp sentTimestamp = 3;
-    TaskDefinition taskDefinition = 4;
+    TaskType taskType = 4;
 }
 
-message WrappedTaskSolution {
+message TaskResponse {
     int64 senderCounter = 1;
     string senderName = 2;
     google.protobuf.Timestamp sentTimestamp = 3;
@@ -69,18 +27,7 @@ message WrappedTaskSolution {
     string receiverName = 5;
     google.protobuf.Timestamp receivedTimestamp = 6;
     google.protobuf.Timestamp respondedTimestamp = 7;
-    TaskSolution taskSolution = 8;
-    Stat stat = 9;
-}
-
-message TaskRequest {
-    string api = 1;
-    WrappedTaskDefinition wrappedTaskDefinition = 2;
-}
-
-message TaskResponse {
-    string api = 1;
-    repeated WrappedTaskSolution wrappedTaskSolutions = 2;
+    TaskType taskType = 8;
 }
 
 service CommunicationTestingService {
