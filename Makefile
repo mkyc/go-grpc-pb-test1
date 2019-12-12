@@ -5,7 +5,8 @@ BUILD := $(CMD) build
 VET := $(CMD) vet
 FMT := $(CMD) fmt
 CLEAN := $(CMD) clean
-
+INSTALL := $(CMD) install
+PROTO := protoc
 
 BUILD_DIR := ./output/
 SRV_DIR := /cmd/server
@@ -30,5 +31,8 @@ clean:
 	$(CLEAN) ./cmd/... ./pkg/...
 	rm -rf $(BUILD_DIR)
 
+install:
+	$(INSTALL) -v ./...
+
 proto:
-	protoc --proto_path=api/proto/v1 --go_out=plugins=grpc:pkg/api/v1 communication-testing-service.proto
+	$(PROTO) --proto_path=api/proto/v1 --go_out=plugins=grpc:pkg/api/v1 communication-testing-service.proto

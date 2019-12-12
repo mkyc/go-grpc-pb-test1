@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/mkyc/go-grpc-pb-test1/pkg/cmd"
+)
 
 func main() {
-	fmt.Println("When I grow up, I'll be server!")
+	if err := cmd.RunServer(); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
 }
