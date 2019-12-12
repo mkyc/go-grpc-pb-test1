@@ -4,7 +4,6 @@ syntax = "proto3";
 package v1;
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/any.proto";
 
 enum TaskType {
     PING = 0; // for simple request-response task
